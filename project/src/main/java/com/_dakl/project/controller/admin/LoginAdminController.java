@@ -5,7 +5,6 @@
 package com._dakl.project.controller.admin;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -13,16 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author luong
  */
 @Controller
-@RequestMapping("/admin")
-
-public class AdminController {
-    @GetMapping 
-        public String index(){
-        return "redirect:/admin/";
-    }
-    @RequestMapping("/")
-    public String admin()
+public class LoginAdminController {
+    @RequestMapping("/logon")
+    public String logon()
     {
-        return "admin/pages/index";
+        return "admin/pages/login";
     }
 }
