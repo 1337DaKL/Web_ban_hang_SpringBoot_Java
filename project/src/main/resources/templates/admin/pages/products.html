@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layouts/head :: head"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+  <header th:replace="admin/layouts/header :: header"></header>
+
+  <!-- =============================================== -->
+
+  <!-- Left side column. contains the sidebar -->
+  <aside th:replace="admin/layouts/siderbar :: sider-bar"></aside>
+
+  <!-- =============================================== -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Quản lý banner
+       
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Examples</a></li>
+        <li class="active">Blank page</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <h1> This is page products
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer th:replace="admin/layouts/footer :: footer"> </footer>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+
+<div th:replace="admin/layouts/script :: script"></div>
+</body>
+</html>

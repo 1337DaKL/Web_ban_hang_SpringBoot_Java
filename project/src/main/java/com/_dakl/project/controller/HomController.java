@@ -16,6 +16,6 @@ public class HomController {
     @RequestMapping("")
     public String home()
     {
-        return "index";
+        return "client/pages/home";
     }
 }

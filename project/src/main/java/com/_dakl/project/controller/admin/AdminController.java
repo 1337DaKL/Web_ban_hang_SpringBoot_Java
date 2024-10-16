@@ -16,6 +16,6 @@ public class AdminController {
     @RequestMapping("/admin123")
     public String admin()
     {
-        return "admin/index";
+        return "admin/pages/index";
     }
 }
