@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com._dakl.project.services.CustomUserDetailService;
+import org.springframework.security.config.annotation.web.LogoutDsl;
 
 /**
  *
@@ -42,8 +43,9 @@ public class SecurityConfig {
                 .loginProcessingUrl("/logon")  // URL xử lý login
                 .usernameParameter("username")  // Tham số cho tên đăng nhập
                 .passwordParameter("password")  // Tham số cho mật khẩu
-                .defaultSuccessUrl("/admin", true)  // Chuyển hướng sau khi login thành công
-            );
+                .defaultSuccessUrl("/admin", true)
+                // Chuyển hướng sau khi login thành công
+            ).logout(logout -> logout.logoutUrl("/admin-logout").logoutSuccessUrl("/logon"));
     
         return httpSecurity.build();
     }
