@@ -9,7 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.Set;
 
 
 @Entity
@@ -23,23 +25,34 @@ public class Category {
 	private String categoryName;
 	@Column(name = "categoryStatus")
 	private Boolean categoryStatus;
-	
+	@OneToMany(mappedBy = "category")
+	private Set<Product> products;
 	public Category() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Category(Integer categoryId, String categoryName, Boolean categoryStatus) {
-		super();
-		this.id = categoryId;
-		this.categoryName = categoryName;
-		this.categoryStatus = categoryStatus;
-	}
+        public Category(Integer id, String categoryName, Boolean categoryStatus, Set<Product> products) {
+            this.id = id;
+            this.categoryName = categoryName;
+            this.categoryStatus = categoryStatus;
+            this.products = products;
+        }
 
-	public Integer getCategoryId() {
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+	
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setCategoryId(Integer categoryId) {
+	public void setId(Integer categoryId) {
 		this.id = categoryId;
 	}
 

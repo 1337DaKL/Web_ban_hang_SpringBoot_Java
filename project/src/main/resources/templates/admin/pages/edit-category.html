@@ -19,8 +19,9 @@
     <!-- Content Header (Page header) -->
 
     <!-- Main content -->
-    <h3 class="box-title">Thêm loại hàng hóa</h3>
-    <form role="form" method="post" th:action="@{/admin/category-new}" th:object="${category}">
+    <h3 class="box-title">Chỉnh sửa loại hàng hóa</h3>
+    <form role="form" method="post" th:action="@{/admin/edit-category}" th:object="${category}">
+        <input type="hidden" class="form-control" th:field="*{id}">
       <div class="box-body">
         <div class="form-group">
           <label for="exampleInputEmail1">Loại sản phẩm</label>
@@ -37,7 +38,7 @@
       </div>
       
       <div class="box-footer">
-        <button type="submit" class="btn btn-primary">Tạo mới</button>
+        <button type="submit" class="btn btn-primary">Sửa</button>
       </div>
     </form>
     

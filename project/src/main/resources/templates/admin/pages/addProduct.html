@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layouts/head :: head"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+  <header th:replace="admin/layouts/header :: header"></header>
+
+  <!-- =============================================== -->
+
+  <!-- Left side column. contains the sidebar -->
+  <aside th:replace="admin/layouts/siderbar :: sider-bar"></aside>
+
+  <!-- =============================================== -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <h3 class="box-title">Thêm sản phẩm</h3>
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <form role="form">
+      <div class="box-body">
+      <div class="form-group">
+      <label for="exampleInputEmail1" _msttexthash="203853" _msthash="131">Email address</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" _mstplaceholder="155493" _msthash="132">
+      </div>
+      <div class="form-group">
+      <label for="exampleInputPassword1" _msttexthash="117572" _msthash="133">Password</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" _mstplaceholder="117572" _msthash="134">
+      </div>
+      <div class="form-group">
+      <label for="exampleInputFile" _msttexthash="138073" _msthash="135">File input</label>
+      <input type="file" id="exampleInputFile">
+      <p class="help-block" _msttexthash="904397" _msthash="136">Example block-level help text here.</p>
+      </div>
+      <div class="checkbox">
+      <label>
+      <input type="checkbox"><font _mstmutation="1" _msttexthash="158119" _msthash="137"> Check me out
+      </font></label>
+      </div>
+      </div>
+      
+      <div class="box-footer">
+      <button type="submit" class="btn btn-primary" _msttexthash="78468" _msthash="138">Submit</button>
+      </div>
+      </form>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer th:replace="admin/layouts/footer :: footer"> </footer>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+
+<div th:replace="admin/layouts/script :: script"></div>
+</body>
+</html>

@@ -26,21 +26,26 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li>
           <a href="/admin/category">
-            <i class="fa fa-th"></i> <span>Quản lý danh mục </span>
+            <i class="fa fa-th"></i> <span>Quản lý loại sản phẩm </span>
             <span class="pull-right-container">
-              <small class="label pull-right bg-green">FE</small>
+              <small class="label pull-right bg-green">CG</small>
             </span>
           </a>
         </li>
 
-        <li>
-          <a href="/admin/products">
-            <i class="fa fa-th"></i> <span>Quản lý sản phẩm </span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">BE</small>
-            </span>
+        <li class="treeview" style="height: auto;">
+          <a href="#">
+              <i class="fa fa-dashboard"></i> <span>Sản phẩm</span>
+              <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+              </span>
           </a>
-        </li>
+          <ul class="treeview-menu" style="display: none;">
+              <li><a href="products"><i class="fa fa-circle-o"></i> Quản lí sản phẩm</a></li>
+              <li><a href="product-add"><i class="fa fa-circle-o"></i> Thêm mới sản phẩm</a></li>
+          </ul>
+      </li>
+      
       </ul>
     </section>
     <!-- /.sidebar -->

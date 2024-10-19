@@ -38,17 +38,30 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Category findById(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.categoryRepository.findById(id).get();
     }
 
     @Override
     public Boolean update(Category category) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            this.categoryRepository.save(category);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+        
     }
 
     @Override
     public Boolean detete(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            this.categoryRepository.delete(findById(id));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     
 }

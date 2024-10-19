@@ -15,6 +15,6 @@ public class ProductController {
     @RequestMapping("/product-add")
     public String add()
     {
-        return "admin/pages/add";
+        return "admin/pages/addProduct";
     }
 }
