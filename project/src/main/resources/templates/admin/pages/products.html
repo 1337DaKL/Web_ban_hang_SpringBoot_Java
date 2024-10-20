@@ -45,12 +45,17 @@
       </thead>
       
       <tbody>
-      <tr role="row" class="odd">
-      <td class="sorting_1">Gecko</td>
-      <td>Firefox 1.0</td>
-      <td>Win 98+ / OSX.2+</td>
-      <td>1.7</td>
-      <td>A</td>
+      <tr role="row" class="odd" th:each="product : ${listProducts}">
+        <td class="sorting_1" th:text="${product.productId}"></td>
+        <td th:text="${product.productName}"></td>
+        <td >
+          <img th:src="@{/uploads/{imageName}(imageName=${product.image})}" alt="Product Image" height="100" width="100">
+
+
+        </td>
+        <td th:text="${product.price}"></td>
+        <td th:if="product.productStatus"><span class="label label-success">Đang hoạt động</span></td>
+        <td th:if="!product.productStatus"><span class="label label-danger">Dừng hoạt động</span></td>
       </tr></tbody>
       
       </table></div></div></div>

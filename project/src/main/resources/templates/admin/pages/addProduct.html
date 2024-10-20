@@ -20,26 +20,42 @@
     <!-- Content Header (Page header) -->
 
     <!-- Main content -->
-    <form role="form">
+    <form role="form" method="post" th:action="@{/admin/add-product}" th:object="${product}" enctype="multipart/form-data">
       <div class="box-body">
       <div class="form-group">
-      <label for="exampleInputEmail1" _msttexthash="203853" _msthash="131">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" _mstplaceholder="155493" _msthash="132">
+      <label for="exampleInputEmail1" _msttexthash="203853" _msthash="131" th:field="*{productName}">Tên sản phẩm</label>
+      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Nhập tên sản phẩm" _mstplaceholder="155493" _msthash="132" name="productName">
       </div>
       <div class="form-group">
-      <label for="exampleInputPassword1" _msttexthash="117572" _msthash="133">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" _mstplaceholder="117572" _msthash="134">
+      <label for="exampleInputPassword1" _msttexthash="117572" _msthash="133" th:field="*{price}">Nhập giá</label>
+      <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Nhập giá sản phẩm đơn vị  đồng" _mstplaceholder="117572" _msthash="134" name="price" >
       </div>
       <div class="form-group">
-      <label for="exampleInputFile" _msttexthash="138073" _msthash="135">File input</label>
-      <input type="file" id="exampleInputFile">
-      <p class="help-block" _msttexthash="904397" _msthash="136">Example block-level help text here.</p>
+      <label for="exampleInputFile" _msttexthash="138073" _msthash="135">Tải ảnh sản phẩm lên</label>
+      <input type="file" id="exampleInputFile" name="fileImage">
       </div>
-      <div class="checkbox">
-      <label>
-      <input type="checkbox"><font _mstmutation="1" _msttexthash="158119" _msthash="137"> Check me out
-      </font></label>
+      <div class="form-group">
+        <label>Chọn loại sản phẩm</label>
+        <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" th:field="*{category.id}">
+
+        <option th:each="category : ${listCategory}" th:value="${category.id}" th:text="${category.categoryName}"></option>
+        </select>
+        </div>
+        <div class="form-group form-check form-check-inline">
+          <label>
+            <input type="radio" name="status" th:field="*{status}" value="1" checked> Đang hoạt động
+          </label>
+          <label>
+            <input type="radio" name="status" th:field="*{status}" value="0"> Dừng hoạt động
+          </label>
+        </div>
+      <div >
+
+          <textarea name="editor" id="editor" rols="10" cols="10" th:field="*{description}">
+            <p>Nhập mô tả sản phẩm vào đây</p>
+          </textarea>
       </div>
+
       </div>
       
       <div class="box-footer">
@@ -58,5 +74,26 @@
 <!-- jQuery 3 -->
 
 <div th:replace="admin/layouts/script :: script"></div>
+<script>
+  const {
+      ClassicEditor,
+      Essentials,
+      Bold,
+      Italic,
+      Font,
+      Paragraph
+  } = CKEDITOR;
+
+  ClassicEditor
+      .create( document.querySelector( '#editor' ), {
+          plugins: [ Essentials, Bold, Italic, Font, Paragraph ],
+          toolbar: [
+              'undo', 'redo', '|', 'bold', 'italic', '|',
+              'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+          ]
+      } )
+      .then( /* ... */ )
+      .catch( /* ... */ );
+</script>
 </body>
 </html>
