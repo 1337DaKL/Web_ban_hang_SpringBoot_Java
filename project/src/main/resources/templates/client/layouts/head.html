@@ -28,4 +28,122 @@
     <link rel="stylesheet" th:href="@{client/css/style.css}">
     <link rel="stylesheet" th:href="@{client/css/skins/skin-demo-10.css}">
     <link rel="stylesheet" th:href="@{client/css/demos/demo-10.css}">
+    <style>
+        /* Kiểu cho sản phẩm */
+        .product {
+            position: relative;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Khi lia chuột vào, phóng to sản phẩm một chút */
+        .product:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Kiểu cho ảnh sản phẩm - đảm bảo ảnh đều nhau và không bị biến dạng */
+        .product img {
+            width: 100%;
+            height: 200px; /* Chiều cao cố định */
+            object-fit: cover; /* Giữ tỷ lệ ảnh, phần dư sẽ bị cắt */
+            border-radius: 8px;
+        }
+
+        /* Kiểu cho tên sản phẩm */
+        .product h2 {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        /* Kiểu cho giá sản phẩm */
+        .product p.price {
+            color: green;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        /* Container cho các nút */
+        .product .btn-container {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Kiểu cho các nút */
+        .product .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Nút "Cho vào giỏ hàng" */
+        .product .btn-add-to-cart {
+            background-color: #28a745;
+            color: white;
+        }
+
+        /* Nút "Xem chi tiết" */
+        .product .btn-view-details {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Hiệu ứng khi hover vào nút "Cho vào giỏ hàng" */
+        .product .btn-add-to-cart:hover {
+            background-color: #218838;
+        }
+
+        /* Hiệu ứng khi hover vào nút "Xem chi tiết" */
+        .product .btn-view-details:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <title>Product Slider</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <style>
+        .intro-slider {
+            position: relative;
+        }
+
+        .intro-slider img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .slider-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider-item:hover .slider-caption {
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+
+        .slider-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+    </style>
+
 </head>

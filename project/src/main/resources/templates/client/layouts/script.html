@@ -13,4 +13,18 @@
     <!-- Main JS File -->
     <script sth:src="@{client/js/main.js}"></script>
     <script th:src="@{client/js/demos/demo-10.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.owl-carousel').owlCarousel({
+                nav: true,
+                dots: true,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                items: 1,
+                loop: true
+            });
+        });
+    </script>
 </div>
