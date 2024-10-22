@@ -4,6 +4,7 @@
  */
 package com._dakl.project.model;
 
+import jakarta.persistence.CascadeType;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -13,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 /**
@@ -44,6 +46,16 @@ public class User {
 	private String telephone;
         @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private Set<User_Role> userRoles;
+        @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+        private Cart cart;
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
 
     public Long getId() {
         return id;
@@ -125,7 +137,7 @@ public class User {
         this.userRoles = userRoles;
     }
 
-    public User(Long id, String userName, String passWord, Boolean enabled, String fullName, Boolean gender, String address, String email, String telephone, Set<User_Role> userRoles) {
+    public User(Long id, String userName, String passWord, Boolean enabled, String fullName, Boolean gender, String address, String email, String telephone, Set<User_Role> userRoles, Cart cart) {
         this.id = id;
         this.userName = userName;
         this.passWord = passWord;
@@ -136,7 +148,10 @@ public class User {
         this.email = email;
         this.telephone = telephone;
         this.userRoles = userRoles;
+        this.cart = cart;
     }
+
+    
 
     public User() {
     }

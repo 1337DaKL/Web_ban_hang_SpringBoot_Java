@@ -8,11 +8,14 @@ import com._dakl.project.model.Cart;
 import com._dakl.project.repository.CartRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author luong
  */
+
+@Service
 public class CartServiceImlp implements CartService{
     @Autowired
     private CartRepository cartRepository;

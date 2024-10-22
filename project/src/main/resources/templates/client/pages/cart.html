@@ -22,14 +22,12 @@
                         <th>Tổng</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr th:each="item : ${cart.cartItems}">
-                        <td th:text="${item.product.name}">Tên sản phẩm</td>
-                        <td th:text="${item.quantity}">Số lượng</td>
-                        <td th:text="${item.product.price}">Giá</td>
-                        <td th:text="${item.quantity * item.product.price}">Tổng</td>
-                    </tr>
-                </tbody>
+                <tr th:each="item : ${listItem}">
+                    <td th:text="${item.product.productName}"></td>
+                    <td th:text="${item.quantity}"></td>
+                    <td th:text="${item.product.price}"></td>
+                    <td th:text="${item.quantity * item.product.price}">Tổng</td>
+                </tr>
             </table>
             
             <div class="d-flex justify-content-between">

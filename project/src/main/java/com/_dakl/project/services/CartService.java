@@ -6,11 +6,13 @@ package com._dakl.project.services;
 
 import com._dakl.project.model.Cart;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author luong
  */
+
 public interface CartService {
     List<Cart> getAll();
     Boolean create(Cart cart);
