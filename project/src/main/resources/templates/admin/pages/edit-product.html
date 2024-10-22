@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layouts/head :: head"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+  <header th:replace="admin/layouts/header :: header"></header>
+
+  <!-- =============================================== -->
+
+  <!-- Left side column. contains the sidebar -->
+  <aside th:replace="admin/layouts/siderbar :: sider-bar"></aside>
+
+  <!-- =============================================== -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <h3 class="box-title">Thêm sản phẩm</h3>
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <form role="form" method="post" th:action="@{/admin/edit-product}" th:object="${product}" enctype="multipart/form-data" >
+      <input type="hidden" th:field="*{productId}">
+      <div class="box-body">
+      <div class="form-group">
+      <label for="exampleInputEmail1" _msttexthash="203853" _msthash="131" th:field="*{productName}">Tên sản phẩm</label>
+      <input type="text" class="form-control" id="exampleInputEmail1" tplaceholder="Nhập tên muốn sửa" _mstplaceholder="155493" _msthash="132" name="productName" th:value="${product.productName}">
+      </div>
+      <div class="form-group">
+      <label for="exampleInputPassword1" _msttexthash="117572" _msthash="133" th:field="*{price}" >Nhập giá</label>
+      <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Nhập giá sản phẩm đơn vị  đồng" _mstplaceholder="117572" _msthash="134" name="price" th:value="${product.price}">
+      </div>
+      <!-- Hiển thị ảnh sản phẩm hiện tại -->
+      <div class="form-group">
+        <label>Ảnh hiện tại:</label>
+        <img th:src="@{/uploads/{imageName}(imageName=${product.image})}" alt="Product Image" height="100" width="100">
+      </div>
+
+      <!-- Upload ảnh mới (nếu có) -->
+      <div class="form-group">
+        <label for="fileImage">Chọn ảnh mới (nếu muốn thay đổi)</label>
+        <input type="file" class="form-control" id="fileImage" name="fileImage">
+      </div>
+      <div class="form-group">
+        <label>Chọn loại sản phẩm</label>
+        <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" th:field="*{category.id}">
+
+        <option th:each="category : ${category}" th:value="${category.id}" th:text="${category.categoryName}"></option>
+        </select>
+        </div>
+        <div class="form-group form-check form-check-inline">
+          <label>
+            <input type="radio" name="status" th:field="*{status}" value="1" > Đang hoạt động
+        </label>
+        <label>
+            <input type="radio" name="status" th:field="*{status}" value="0" > Dừng hoạt động
+        </label>
+
+        </div>
+      <div >
+
+          <textarea name="editor" id="editor" rols="10" cols="10" th:field="*{description}">
+            Nhập mô tả sản phẩm vào đây
+          </textarea>
+      </div>
+
+      </div>
+      
+      <div class="box-footer">
+      <button type="submit" class="btn btn-primary" _msttexthash="78468" _msthash="138">Chỉnh sửa</button>
+      </div>
+      </form>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer th:replace="admin/layouts/footer :: footer"> </footer>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+
+<div th:replace="admin/layouts/script :: script"></div>
+<script>
+  const {
+      ClassicEditor,
+      Essentials,
+      Bold,
+      Italic,
+      Font,
+      Paragraph
+  } = CKEDITOR;
+
+  ClassicEditor
+      .create( document.querySelector( '#editor' ), {
+          plugins: [ Essentials, Bold, Italic, Font, Paragraph ],
+          toolbar: [
+              'undo', 'redo', '|', 'bold', 'italic', '|',
+              'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+          ]
+      } )
+      .then( /* ... */ )
+      .catch( /* ... */ );
+</script>
+</body>
+</html>

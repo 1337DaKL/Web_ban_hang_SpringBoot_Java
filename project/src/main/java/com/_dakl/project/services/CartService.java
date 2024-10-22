@@ -4,14 +4,17 @@
  */
 package com._dakl.project.services;
 
-import com._dakl.project.model.User;
-import java.util.Optional;
+import com._dakl.project.model.Cart;
+import java.util.List;
 
 /**
  *
  * @author luong
  */
-public interface UserService {
-    User findByUserName(String userName);
-    boolean checkLogin(String userName , String passWord);
+public interface CartService {
+    List<Cart> getAll();
+    Boolean create(Cart cart);
+    Cart findById(Integer cartId);
+    Boolean update(Cart cart);
+    Boolean detete(Integer cartId);
 }

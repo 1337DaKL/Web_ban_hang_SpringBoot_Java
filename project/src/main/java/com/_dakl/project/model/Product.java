@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.text.DecimalFormat;
 
 /**
  *
@@ -27,8 +28,9 @@ public class Product {
     @Column(name = "productName")
     private String productName;
     @Column(name = "price")
-    private Double price;
+    private Integer price;
     @Column(name = "image")
+    
     private String image;
     @Column(name = "description")
     private String description;
@@ -41,14 +43,14 @@ public class Product {
     public Product() {
     }
 
-    public Product(Integer productId, String productName, Double price, String image, String description, Boolean status, Category category) {
+    public Product(Integer productId, String productName, Integer price, String image, String description, Boolean status, Category category) {
         this.productId = productId;
         this.productName = productName;
-        this.price = price;
         this.image = image;
         this.description = description;
         this.status = status;
         this.category = category;
+        this.price = price;
     }
 
     public Integer getProductId() {
@@ -59,7 +61,7 @@ public class Product {
         return productName;
     }
 
-    public Double getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
@@ -77,10 +79,6 @@ public class Product {
 
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public void setImage(String image) {
@@ -101,6 +99,10 @@ public class Product {
 
     public Boolean getStatus() {
         return status;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
     public Category getCategory() {

@@ -1,99 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        body {
-            background-color: #f7f7f7;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-container {
-            background: white;
-            padding: 30px; /* Điều chỉnh padding để gọn gàng hơn */
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            width: 300px; /* Kích thước cố định cho form */
-            box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
-        }
-        .login-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .login-container .input-group {
-            position: relative;
-            margin-bottom: 20px;
-        }
-        .login-container .input-group input {
-            width: 100%;
-            padding: 10px 40px; /* Thay đổi padding cho ô nhập liệu */
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
-        }
-        .login-container .input-group .input-icon {
-            position: absolute;
-            top: 50%;
-            left: 10px; /* Điều chỉnh vị trí biểu tượng */
-            transform: translateY(-50%);
-            color: #888;
-            font-size: 18px;
-        }
-        .login-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .login-container button:hover {
-            background-color: #218838;
-        }
-        .login-container .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #777;
-        }
-        .login-container .footer a {
-            color: #28a745;
-            text-decoration: none;
-        }
-        .login-container .footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-
-<div class="login-container">
-    <h2>Đăng Nhập</h2>
-    <div class="input-group">
-        <i class="fas fa-user input-icon"></i>
-        <input type="text" placeholder="Tên đăng nhập" required>
-    </div>
-    <div class="input-group">
-        <i class="fas fa-lock input-icon"></i>
-        <input type="password" placeholder="Mật khẩu" required>
-    </div>
-    <button type="submit">Đăng Nhập</button>
-    <div class="footer">
-        <p>Không có tài khoản? <a href="#">Đăng ký ngay</a></p>
-    </div>
-</div>
-
-</body>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <title>JSP Page</title>
+    </head>
+    <body>
+        
+        <div class="container" style="margin-top: 50px;">
+            <div class="row" style="border: 1px darkgrey solid; border-radius: 10px;width: 50%; margin: 0 auto; padding: 20px;" >
+                <div class="col-sm-12">
+                <h3>Login</h3>
+                <form th:action="@{/checklogin}" method="post">
+                    <div class="form-group">
+                        <label>UserName</label>
+                        <input type="text" class="form-control" name="username" placeholder="Enter UserName">
+                    </div>
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" class="form-control" name="password" placeholder="Enter password">
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Remember me</label>
+                    </div>
+                    <p style="color: red" th:text="${error}"></p>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-primary">Cancel</button>
+                    <p style="margin: 10px; font-size: 16px;"><a href="register-user.jsp">Register</a></p>
+                </form>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

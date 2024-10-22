@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<!-- Mirrored from portotheme.com/html/molla/index-10.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 19 Jan 2024 03:02:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+
+<head th:replace="client/layouts/head :: head"> </head>
+<body>
+    <div class="page-wrapper">
+        <header th:replace="client/layouts/header"></header>
+        
+        <div class="container">
+            <h1>Giỏ Hàng của bạn</h1>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
+                        <th>Tổng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${cart.cartItems}">
+                        <td th:text="${item.product.name}">Tên sản phẩm</td>
+                        <td th:text="${item.quantity}">Số lượng</td>
+                        <td th:text="${item.product.price}">Giá</td>
+                        <td th:text="${item.quantity * item.product.price}">Tổng</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="d-flex justify-content-between">
+                <h3 th:text=""></h3>
+                <div>
+                    <a class="btn btn-primary" th:href="}">Thanh Toán</a>
+                    <a class="btn btn-secondary" th:href="@{/}">Trở Về</a>
+                </div>
+            </div>
+        </div>
+
+        <footer th:replace="client/layouts/footer"></footer>
+    </div><!-- End .page-wrapper -->
+    <div th:replace="client/layouts/script :: script"></div>
+</body>
+
+
+<!-- Mirrored from portotheme.com/html/molla/index-10.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 19 Jan 2024 03:03:17 GMT -->
+</html>

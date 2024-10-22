@@ -1,5 +1,6 @@
 package com._dakl.project;
 
+import com._dakl.project.model.User;
 import com._dakl.project.services.StorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,5 +19,14 @@ public class ProjectApplication {
             return (args) -> {
                 storageService.init();
             };
+        }
+        
+        @Bean(name ="USER_BEAN")
+        public User setUser()
+        {
+            User u = new User();
+            u.setUserName("tdl");
+            u.setPassWord("ok");
+            return  u;
         }
 }

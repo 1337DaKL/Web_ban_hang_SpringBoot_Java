@@ -4,13 +4,13 @@
  */
 package com._dakl.project.repository;
 
-import com._dakl.project.model.User;
+import com._dakl.project.model.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 /**
  *
  * @author luong
  */
-    public interface UserRepository extends JpaRepository<User, Long>{
-    User findByUserName(String userName);
+public interface CartItemRepository extends JpaRepository<CartItem, Integer>{
     
 }

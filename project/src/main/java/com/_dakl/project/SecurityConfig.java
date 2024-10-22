@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com._dakl.project.services.CustomUserDetailService;
-import org.springframework.security.config.annotation.web.LogoutDsl;
+import org.springframework.context.annotation.Lazy;
 
 /**
  *
@@ -24,6 +24,7 @@ import org.springframework.security.config.annotation.web.LogoutDsl;
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
+    @Lazy
     private CustomUserDetailService customUserDetailService;
     @Bean
     BCryptPasswordEncoder passwordEncoder(){
