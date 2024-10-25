@@ -12,24 +12,37 @@
         
         <div class="container">
             <h1>Giỏ Hàng của bạn</h1>
-            
+
             <table class="table">
                 <thead>
                     <tr>
                         <th>Sản phẩm</th>
+                        <th>Hình ảnh</th>
                         <th>Số lượng</th>
                         <th>Giá</th>
                         <th>Tổng</th>
                     </tr>
                 </thead>
-                <tr th:each="item : ${listItem}">
-                    <td th:text="${item.product.productName}"></td>
-                    <td th:text="${item.quantity}"></td>
-                    <td th:text="${item.product.price}"></td>
-                    <td th:text="${item.quantity * item.product.price}">Tổng</td>
-                </tr>
-                
+                <tbody>
+                    <tr th:each="item : ${listItem}">
+                        <td th:text="${item.product.productName}"></td>
+                        <td>
+                            <img th:src="@{/uploads/{imageName}(imageName=${item.product.image})}" alt="Sản phẩm" height="100" width="100">
+                        </td>
+                        <td>
+                            <input type="number" th:value="${item.quantity}" min="1" class="quantity-input" 
+                                onchange="updateTotal(this, ${item.product.price})">
+                        </td>
+                        <td th:text="${item.product.price}"></td>
+                        <td th:text="${item.quantity * item.product.price}"></td>
+                    </tr>
+                </tbody>
             </table>
+            <div class="cart-actions">
+                <a th:href="@{/products}" class="btn btn-secondary">Trở về</a>
+                <button onclick="checkout()" class="btn btn-primary">Thanh toán</button>
+            </div>
+
             
             <div class="d-flex justify-content-between">
                 <h3 th:text=""></h3>

@@ -43,8 +43,26 @@ public class ClientController {
     private CartService cartService;
     
     @RequestMapping("")
-    public String home(Model model)
+    public String home(Model model , HttpSession session)
     {
+        Cart cart = (Cart) session.getAttribute("CART");
+        System.out.println(cart);
+        if (cart != null) {
+            Set<CartItem> listItem = cart.getCartItems();
+            System.out.println(listItem);
+            model.addAttribute("listItem", listItem);
+            long total = 0;
+            for(CartItem x : listItem)
+            {
+                total += (x.getQuantity() * x.getProduct().getPrice());
+            }
+            model.addAttribute("total" , total);
+            model.addAttribute("size" , listItem.size());
+        } else {
+            // Nếu giỏ hàng trống, truyền thông báo
+            model.addAttribute("listItem", new ArrayList<>());
+            model.addAttribute("message", "Giỏ hàng của bạn trống");    
+        }
         List<Category> listCategorys = this.categoryService.getAll();
         List<Category> categorys = new ArrayList<>();
         for(Category x : listCategorys)
@@ -58,8 +76,26 @@ public class ClientController {
         return "client/pages/home";
     }
     @RequestMapping("/products")
-    public String product(Model model)
+    public String product(Model model , HttpSession session)
     {
+        Cart cart = (Cart) session.getAttribute("CART");
+        System.out.println(cart);
+        if (cart != null) {
+            Set<CartItem> listItem = cart.getCartItems();
+            System.out.println(listItem);
+            model.addAttribute("listItem", listItem);
+            long total = 0;
+            for(CartItem x : listItem)
+            {
+                total += (x.getQuantity() * x.getProduct().getPrice());
+            }
+            model.addAttribute("total" , total);
+            model.addAttribute("size" , listItem.size());
+        } else {
+            // Nếu giỏ hàng trống, truyền thông báo
+            model.addAttribute("listItem", new ArrayList<>());
+            model.addAttribute("message", "Giỏ hàng của bạn trống");    
+        }
         List<Product> list = this.productService.getAll();
         List<Product> listProducts = new ArrayList<>();
         for(Product x : list)
@@ -91,10 +127,11 @@ public class ClientController {
     @RequestMapping("/cart")
     public String cart()
     {
+        
         return  "client/pages/cart";
     }
     @PostMapping("/checklogin")
-public String checkLogin(
+    public String checkLogin(
         @RequestParam("username") String userName,
         @RequestParam("password") String passWord,
         Model model,
@@ -146,10 +183,17 @@ public String checkLogin(
             Set<CartItem> listItem = cart.getCartItems();
             System.out.println(listItem);
             model.addAttribute("listItem", listItem);
+            long total = 0;
+            for(CartItem x : listItem)
+            {
+                total += (x.getQuantity() * x.getProduct().getPrice());
+            }
+            model.addAttribute("total" , total);
+            model.addAttribute("size" , listItem.size());
         } else {
             // Nếu giỏ hàng trống, truyền thông báo
             model.addAttribute("listItem", new ArrayList<>());
-            model.addAttribute("message", "Giỏ hàng của bạn trống");
+            model.addAttribute("message", "Giỏ hàng của bạn trống");    
         }
 
         return "client/pages/cart";
