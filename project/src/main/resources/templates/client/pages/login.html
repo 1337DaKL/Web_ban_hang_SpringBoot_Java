@@ -12,23 +12,25 @@
         <div class="container" style="margin-top: 50px;">
             <div class="row" style="border: 1px darkgrey solid; border-radius: 10px;width: 50%; margin: 0 auto; padding: 20px;" >
                 <div class="col-sm-12">
-                <h3>Login</h3>
+                <h3>Đăng nhập</h3>
                 <form th:action="@{/checklogin}" method="post">
                     <div class="form-group">
-                        <label>UserName</label>
+                        <label>Tài khoản</label>
                         <input type="text" class="form-control" name="username" placeholder="Enter UserName">
                     </div>
                     <div class="form-group">
-                        <label>Password:</label>
+                        <label>Mật khẩu</label>
                         <input type="password" class="form-control" name="password" placeholder="Enter password">
                     </div>
                     <div class="checkbox">
-                        <label><input type="checkbox"> Remember me</label>
+                        <label><input type="checkbox">Nhớ mật khẩu</label>
                     </div>
                     <p style="color: red" th:text="${error}"></p>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="reset" class="btn btn-primary">Cancel</button>
-                    <p style="margin: 10px; font-size: 16px;"><a href="register-user.jsp">Register</a></p>
+                    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                    <a th:href="@{/}" class="btn btn-primary">Trở về</a>
+
+
+                    <p style="margin: 10px; font-size: 16px;"><a href="register-user.jsp">Đăng kí</a></p>
                 </form>
                 </div>
             </div>

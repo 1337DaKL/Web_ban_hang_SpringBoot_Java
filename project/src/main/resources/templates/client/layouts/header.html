@@ -177,7 +177,7 @@
                                     <img th:src="@{/uploads/{imageName}(imageName=${item.product.image})}" alt="Sản phẩm">
                                 </a>
                             </figure>
-                            <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
+                            <a th:href="@{/delete-cart-item/{cartItemId}(cartItemId=${item.id})}" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                         </div><!-- End .product -->
                     </div><!-- End .dropdown-cart-products -->
 

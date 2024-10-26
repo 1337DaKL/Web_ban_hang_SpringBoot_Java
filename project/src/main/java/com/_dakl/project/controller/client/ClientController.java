@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com._dakl.project.model.User;
 import com._dakl.project.model.Category;
 import com._dakl.project.model.Product;
+import com._dakl.project.services.CartItemService;
 import com._dakl.project.services.CartService;
 import com._dakl.project.services.CategoryService;
 import com._dakl.project.services.ProductService;
@@ -23,6 +24,7 @@ import com._dakl.project.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import java.util.Set;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -41,6 +43,8 @@ public class ClientController {
     private UserService userService;
     @Autowired 
     private CartService cartService;
+    @Autowired
+    private CartItemService cartItemService;
     
     @RequestMapping("")
     public String home(Model model , HttpSession session)
@@ -123,13 +127,6 @@ public class ClientController {
     {
         return "client/pages/login";
     }
-    
-    @RequestMapping("/cart")
-    public String cart()
-    {
-        
-        return  "client/pages/cart";
-    }
     @PostMapping("/checklogin")
     public String checkLogin(
         @RequestParam("username") String userName,
@@ -174,6 +171,29 @@ public class ClientController {
         return "client/pages/login";
     }
 }
+    @RequestMapping("/cart")
+    public String cart(HttpSession session , Model model)
+    {
+        Cart cart = (Cart) session.getAttribute("CART");
+        System.out.println(cart);
+        if (cart != null) {
+            Set<CartItem> listItem = cart.getCartItems();
+            System.out.println(listItem);
+            model.addAttribute("listItem", listItem);
+            long total = 0;
+            for(CartItem x : listItem)
+            {
+                total += (x.getQuantity() * x.getProduct().getPrice());
+            }
+            model.addAttribute("total" , total);
+            model.addAttribute("size" , listItem.size());
+        } else {
+            // Nếu giỏ hàng trống, truyền thông báo
+            model.addAttribute("listItem", new ArrayList<>());
+            model.addAttribute("message", "Giỏ hàng của bạn trống");    
+        }
+        return  "client/pages/cart";
+    }
     @GetMapping("/cart")
     public String viewCart(HttpSession session, Model model) {
         // Lấy giỏ hàng từ session
@@ -203,5 +223,17 @@ public class ClientController {
     public String logout(HttpSession session) {
         session.invalidate();  // Hủy session
         return "redirect:/login-client";  // Chuyển hướng về trang đăng nhập
+    }
+    @GetMapping("/delete-cart-item/{cartItemId}")
+    public String deleteCartItem(@PathVariable("cartItemId") Integer cartItemId)
+    {
+        if(cartItemService.detete(cartItemId))
+        {
+            return "redirect:/products";
+        }
+        else
+        {
+            return "redirect:/products";
+        }
     }
 }

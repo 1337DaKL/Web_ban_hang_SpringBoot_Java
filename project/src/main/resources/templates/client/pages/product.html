@@ -11,21 +11,33 @@
         <h3 style="text-align: center; margin: 20px 0;">Tất cả sản phẩm của chúng tôi</h3>
         <div class="container mt-4">
             <div class="row">
-                <!-- Lặp qua các sản phẩm -->
-                <div class="col-md-3 col-sm-6" th:each="product : ${product}">
-                    <div class="product">
-                        <img th:src="@{/uploads/{imageName}(imageName=${product.image})}" alt="Sản phẩm">
-                        <h2 th:text="${product.productName}"></h2>
-                        <p class="price" th:text="${product.price}"></p>
-                        <!-- Nút cho vào giỏ hàng và xem chi tiết -->
-                        <div class="btn-container">
-                            <button class="btn btn-add-to-cart">Mua</button>
-                            <button class="btn btn-view-details">Chi tiết</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <div class="col-6 col-md-4 col-lg-3" th:each="product : ${product}">
+                    <div class="product product-3 text-center">
+                        <figure class="product-media">
+                            <a href="product.html">
+                                <img th:src="@{/uploads/{imageName}(imageName=${product.image})}" alt="Product image" class="product-image">
+                            </a>
+
+                            <div class="product-action-vertical">
+                                <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>Thêm vào danh sách yêu thích</span></a>
+                            </div><!-- End .product-action-vertical -->
+                        </figure><!-- End .product-media -->
+
+                        <div class="product-body">
+                            <h3 class="product-title"><a href="product.html" th:text="${product.productName}"></a></h3><!-- End .product-title -->
+                            <div class="product-price" th:text="${product.price}">
+                            </div><!-- End .product-price -->
+                        </div><!-- End .product-body -->
+
+                        <div class="product-action">
+                            <a href="#" class="btn-product btn-cart" title="Add to cart"><span>Thêm vào giỏ hàng</span></a>
+                            <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>Xem nhanh</span></a>
+                        </div><!-- End .product-action -->
+                    </div><!-- End .product -->
+                </div><!-- End .col-6 col-md-4 col-lg-3 -->
+            </div><!-- End .row -->
         </div>
+
 
         <footer th:replace="client/layouts/footer"></footer>
     </div><!-- End .page-wrapper -->

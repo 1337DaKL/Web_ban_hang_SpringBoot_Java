@@ -36,7 +36,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())  // Vô hiệu hóa CSRF
             .authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/*").permitAll()
-                .requestMatchers("/admin/**").hasAuthority("ADMIN")  // Yêu cầu quyền ADMIN cho các trang /admin/**
+                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/delete-cart-item/**").permitAll()  // Yêu cầu quyền ADMIN cho các trang /admin/**
                 .anyRequest().authenticated()  // Các yêu cầu khác đều được phép
             )
             .formLogin(login -> login
