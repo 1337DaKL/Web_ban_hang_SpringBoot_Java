@@ -42,4 +42,15 @@ public class UserSeviceImpl implements UserService {
 
         return false; // Mật khẩu sai hoặc không tồn tại tài khoản
     }
+    public boolean registerUser(String username, String password, String email) {
+        if (userRepository.findByUserName(username) != null) {
+            return false; // Tên người dùng đã tồn tại
+        }
+        User user = new User();
+        user.setUserName(username);
+        user.setPassWord(passwordEncoder.encode(password));
+        user.setEmail(email);
+        userRepository.save(user);
+        return true; 
+    }
 }

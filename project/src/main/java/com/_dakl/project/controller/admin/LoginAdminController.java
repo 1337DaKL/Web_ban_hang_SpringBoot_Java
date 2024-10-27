@@ -18,4 +18,8 @@ public class LoginAdminController {
     {
         return "admin/pages/login";
     }
+    @RequestMapping("/403")
+    public String accessDenied() {
+        return "admin/pages/403"; // Trả về trang 403.html
+    }
 }

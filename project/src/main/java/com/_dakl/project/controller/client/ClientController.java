@@ -134,90 +134,77 @@ public class ClientController {
         Model model,
         HttpSession session) {
 
-    // Kiểm tra tên đăng nhập và mật khẩu
-    if (userService.checkLogin(userName, passWord)) {
-        System.err.println("Đăng nhập thành công");
+        if (userService.checkLogin(userName, passWord)) {
+            System.err.println("Đăng nhập thành công");
 
-        // Lưu tên người dùng vào session
-        session.setAttribute("USERNAME", userName);
+            // Lưu tên người dùng vào session
+            session.setAttribute("USERNAME", userName);
 
-        // Lấy thông tin người dùng từ cơ sở dữ liệu
-        User user = userService.findByUserName(userName);
+            // Lấy thông tin người dùng từ cơ sở dữ liệu
+            User user = userService.findByUserName(userName);
 
-        // Nếu người dùng chưa có giỏ hàng, tạo mới và lưu vào DB
-        if (user.getCart() == null) {
-            Cart cart = new Cart();
-            cart.setUser(user);
-            cartService.create(cart);  // Lưu giỏ hàng mới vào DB
-            user.setCart(cart);
+            // Nếu người dùng chưa có giỏ hàng, tạo mới và lưu vào DB
+            if (user.getCart() == null) {
+                Cart cart = new Cart();
+                cart.setUser(user);
+                cartService.create(cart);  // Lưu giỏ hàng mới vào DB
+                user.setCart(cart);
+            }
+
+            // Lưu giỏ hàng vào session để sử dụng ở các phần khác
+
+            Cart cart = user.getCart();
+            System.out.println(cart.getCartItems());
+            session.setAttribute("CART", cart); // Lưu giỏ hàng vào session
+
+
+            // Chuyển hướng về trang chủ sau khi đăng nhập thành công
+            return "redirect:/";  // Dùng redirect để tránh gửi lại form
+        } else {
+            System.out.println("Sai tài khoản hoặc mật khẩu");
+
+            // Thêm thông báo lỗi vào model
+            model.addAttribute("error", "Tài khoản hoặc mật khẩu không chính xác");
+
+            // Quay trở lại trang login nếu đăng nhập không thành công
+            return "client/pages/login";
         }
-
-        // Lưu giỏ hàng vào session để sử dụng ở các phần khác
-
-        Cart cart = user.getCart();
-        System.out.println(cart.getCartItems());
-        session.setAttribute("CART", cart); // Lưu giỏ hàng vào session
-
-
-        // Chuyển hướng về trang chủ sau khi đăng nhập thành công
-        return "redirect:/";  // Dùng redirect để tránh gửi lại form
-    } else {
-        System.out.println("Sai tài khoản hoặc mật khẩu");
-
-        // Thêm thông báo lỗi vào model
-        model.addAttribute("error", "Tài khoản hoặc mật khẩu không chính xác");
-
-        // Quay trở lại trang login nếu đăng nhập không thành công
-        return "client/pages/login";
     }
-}
     @RequestMapping("/cart")
     public String cart(HttpSession session , Model model)
     {
-        Cart cart = (Cart) session.getAttribute("CART");
-        System.out.println(cart);
-        if (cart != null) {
-            Set<CartItem> listItem = cart.getCartItems();
-            System.out.println(listItem);
-            model.addAttribute("listItem", listItem);
-            long total = 0;
-            for(CartItem x : listItem)
-            {
-                total += (x.getQuantity() * x.getProduct().getPrice());
-            }
-            model.addAttribute("total" , total);
-            model.addAttribute("size" , listItem.size());
-        } else {
-            // Nếu giỏ hàng trống, truyền thông báo
-            model.addAttribute("listItem", new ArrayList<>());
-            model.addAttribute("message", "Giỏ hàng của bạn trống");    
-        }
         return  "client/pages/cart";
     }
     @GetMapping("/cart")
     public String viewCart(HttpSession session, Model model) {
         // Lấy giỏ hàng từ session
         Cart cart = (Cart) session.getAttribute("CART");
-        System.out.println(cart);
-        if (cart != null) {
-            Set<CartItem> listItem = cart.getCartItems();
-            System.out.println(listItem);
+
+        if (cart == null) {
+            // Nếu giỏ hàng không tồn tại, khởi tạo một giỏ hàng mới
+            cart = new Cart();
+            session.setAttribute("CART", cart);
+        }
+
+        Set<CartItem> listItem = cart.getCartItems();
+        if (listItem == null || listItem.isEmpty()) {
+            // Nếu giỏ hàng trống, truyền thông báo
+            model.addAttribute("listItem", new ArrayList<>());
+            model.addAttribute("message", "Giỏ hàng của bạn trống");
+        } else {
             model.addAttribute("listItem", listItem);
             long total = 0;
             for(CartItem x : listItem)
             {
                 total += (x.getQuantity() * x.getProduct().getPrice());
             }
-            model.addAttribute("total" , total);
-            model.addAttribute("size" , listItem.size());
-        } else {
-            // Nếu giỏ hàng trống, truyền thông báo
-            model.addAttribute("listItem", new ArrayList<>());
-            model.addAttribute("message", "Giỏ hàng của bạn trống");    
+            model.addAttribute("total", total);
+            model.addAttribute("size", listItem.size());
         }
 
-        return "client/pages/cart";
+        return "client/pages/cart"; // Trả về view cart
     }
+
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -225,15 +212,77 @@ public class ClientController {
         return "redirect:/login-client";  // Chuyển hướng về trang đăng nhập
     }
     @GetMapping("/delete-cart-item/{cartItemId}")
-    public String deleteCartItem(@PathVariable("cartItemId") Integer cartItemId)
-    {
-        if(cartItemService.detete(cartItemId))
-        {
+    public String deleteCartItem(@PathVariable("cartItemId") Integer cartItemId, HttpSession session) {
+        if (cartItemService.detete(cartItemId)) {
+            Cart cart = (Cart) session.getAttribute("CART");
+
+            if (cart != null) {
+                CartItem cartItem = cart.getCartItems().stream()
+                                         .filter(item -> item.getId().equals(cartItemId))
+                                         .findFirst()
+                                         .orElse(null);
+
+                if (cartItem != null) {
+                    cart.getCartItems().remove(cartItem);
+                    session.setAttribute("CART", cart);
+                }
+            }
+        }
+
+        return "redirect:/products";
+    }
+
+
+
+   @PostMapping("/add-to-cart/{productId}")
+        public String addToCart(@PathVariable("productId") Integer productId, HttpSession session) {
+            Product product = productService.findById(productId);
+            if (product == null) {
+                return "redirect:/products";
+            }
+
+            Cart cart = (Cart) session.getAttribute("CART");
+            if (cart == null) {
+                cart = new Cart();
+            }
+
+            CartItem existingItem = cart.getCartItems().stream()
+                .filter(item -> item.getProduct().getProductId().equals(productId))
+                .findFirst()
+                .orElse(null);
+
+            if (existingItem != null) {
+                existingItem.setQuantity(existingItem.getQuantity() + 1);
+                cartItemService.update(existingItem);
+            } else {
+                CartItem cartItem = new CartItem();
+                cartItem.setProduct(product);
+                cartItem.setQuantity(1);
+                cart.addItem(cartItem); 
+                cartItem.setCart(cart);
+                cartItemService.create(cartItem);
+            }
+
+            session.setAttribute("CART", cart);
             return "redirect:/products";
         }
-        else
-        {
-            return "redirect:/products";
+
+    @GetMapping("/register")
+    public String showRegistrationForm() {
+        return "client/pages/register"; 
+    }
+    @PostMapping("/register")
+    public String registerUser(@RequestParam String username,
+                                @RequestParam String password,
+                                @RequestParam String email,
+                                Model model) {
+        
+
+        if (userService.registerUser(username , password , email)) {
+            return "client/pages/login"; 
+        } else {
+            model.addAttribute("error", "Tên người dùng đã tồn tại!");
+            return "client/pages/register";
         }
     }
 }

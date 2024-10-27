@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -42,12 +43,14 @@ public class Cart {
     }
     
     public Cart() {
+        this.cartItems = new HashSet<>();
     }
 
     public Cart(Integer id, Set<CartItem> cartItems, User user) {
         this.id = id;
         this.cartItems = cartItems;
         this.user = user;
+        this.cartItems = new HashSet<>();
     }
 
     
@@ -67,5 +70,24 @@ public class Cart {
     public void setCartItems(Set<CartItem> cartItems) {
         this.cartItems = cartItems;
     }
-    
+    public void addItem(CartItem cartItem) {
+        if (cartItems == null) {
+            cartItems = new HashSet<>();
+        }
+        cartItems.add(cartItem);
+        cartItem.setCart(this); // Đặt cart cho CartItem
+    }
+
+    public void removeItem(CartItem cartItem) {
+        if (cartItems != null) {
+            cartItems.remove(cartItem);
+        }
+    }
+
+    public double getTotalPrice() {
+        return cartItems.stream()
+            .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
+            .sum();
+    }
+
 }

@@ -13,5 +13,6 @@ import java.util.Optional;
  */
 public interface UserService {
     User findByUserName(String userName);
-    boolean checkLogin(String userName , String passWord);
+    boolean checkLogin(String userName, String passWord);
+    boolean registerUser(String username, String password, String email);
 }

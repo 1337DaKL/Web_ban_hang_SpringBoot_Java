@@ -185,18 +185,17 @@
                         <span>Tổng tiền</span>
                         <span class="cart-total-price" th:text="${total}"></span>
                     </div><!-- End .dropdown-cart-total -->
+                    <div th:if="${size} == 0" class="empty-cart">
+                        <p>Giỏ hàng của bạn đang trống. Hãy mua sắm để ủng hộ chúng tôi nhé!</p>
+                    </div>
 
-                    <span th:if="${message}">
-                        <span>Giỏ hàng của bạn trống</span>
-                    </span>
-
-                    <div class="dropdown-cart-action" >
+                    <div class="dropdown-cart-action" th:if="${size} != 0">
                         <a th:href="@{/cart}" class="btn btn-primary">Giỏ hàng</a>
-                        <a href="checkout.html" class="btn btn-outline-primary-2">
+                        <a th:href="@{/checkout}" class="btn btn-outline-primary-2">
                             <span>Thanh Toán</span>
                             <i class="icon-long-arrow-right"></i>
                         </a>
-                    </div><!-- End .dropdown-cart-action -->
+                    </div>
                 </div>
 
 

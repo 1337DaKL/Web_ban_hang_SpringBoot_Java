@@ -26,37 +26,37 @@ public class SecurityConfig {
     @Autowired
     @Lazy
     private CustomUserDetailService customUserDetailService;
+
     @Bean
-    BCryptPasswordEncoder passwordEncoder(){
+    BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-            .csrf(csrf -> csrf.disable())  // Vô hiệu hóa CSRF
-            .authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/*").permitAll()
-                .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                .requestMatchers("/delete-cart-item/**").permitAll()  // Yêu cầu quyền ADMIN cho các trang /admin/**
-                .anyRequest().authenticated()  // Các yêu cầu khác đều được phép
-            )
-            .formLogin(login -> login
-                .loginPage("/logon")  // Trang login tùy chỉnh
-                .loginProcessingUrl("/logon")  // URL xử lý login
-                .usernameParameter("username")  // Tham số cho tên đăng nhập
-                .passwordParameter("password")  // Tham số cho mật khẩu
-                .defaultSuccessUrl("/admin", true)
-                // Chuyển hướng sau khi login thành công
-            ).logout(logout -> logout.logoutUrl("/admin-logout").logoutSuccessUrl("/logon"));
-    
+                .csrf(csrf -> csrf.disable()) // Vô hiệu hóa CSRF
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/*").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/delete-cart-item/**").permitAll()
+                        .requestMatchers("/add-to-cart/**").permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(login -> login
+                        .loginPage("/logon")
+                        .loginProcessingUrl("/logon")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/admin", true))
+                .logout(logout -> logout.logoutUrl("/admin-logout").logoutSuccessUrl("/logon"))
+                .exceptionHandling(exception -> exception.accessDeniedPage("/403"));;
         return httpSecurity.build();
     }
-    
-    
+
     @Bean
-    WebSecurityCustomizer webSecurityCustomizer(){
-        return (web ) -> web.debug(true).ignoring().requestMatchers("/static/**" , "/client/**" , "/assets/**", "uploads/**");
+    WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.debug(true).ignoring().requestMatchers("/static/**", "/client/**", "/assets/**",
+                "uploads/**");
     }
-    
-    
+
 }

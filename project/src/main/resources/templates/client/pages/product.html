@@ -30,9 +30,17 @@
                         </div><!-- End .product-body -->
 
                         <div class="product-action">
-                            <a href="#" class="btn-product btn-cart" title="Add to cart"><span>Thêm vào giỏ hàng</span></a>
-                            <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>Xem nhanh</span></a>
+                            <form th:action="@{/add-to-cart/{id}(id=${product.productId})}" method="post">
+                                <button type="submit" class="btn-product btn-cart" title="Add to cart" style="border: none; background: none; padding: 0; cursor: pointer;">
+                                    <span>Thêm vào giỏ hàng</span>
+                                </button>
+
+                            </form>
+                            <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view">
+                                <span>Chi tiết</span>
+                            </a>
                         </div><!-- End .product-action -->
+
                     </div><!-- End .product -->
                 </div><!-- End .col-6 col-md-4 col-lg-3 -->
             </div><!-- End .row -->
