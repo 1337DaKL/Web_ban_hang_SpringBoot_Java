@@ -168,7 +168,7 @@
                                 </h4>
                                 <span class="cart-product-info">
                                     <span class="cart-product-qty" th:text="${item.quantity}"></span>
-                                    x <span th:text="${item.product.price}"></span>
+                                    x <span th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} +  vnđ"></span>
                                 </span>
                             </div><!-- End .product-cart-details -->
 
@@ -183,7 +183,7 @@
 
                     <div class="dropdown-cart-total" th:if="${total}">
                         <span>Tổng tiền</span>
-                        <span class="cart-total-price" th:text="${total}"></span>
+                        <span class="cart-total-price" th:text="${#numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT')} +  vnđ"></span>
                     </div><!-- End .dropdown-cart-total -->
                     <div th:if="${size} == 0" class="empty-cart">
                         <p>Giỏ hàng của bạn đang trống. Hãy mua sắm để ủng hộ chúng tôi nhé!</p>
@@ -191,7 +191,7 @@
 
                     <div class="dropdown-cart-action" th:if="${size} != 0">
                         <a th:href="@{/cart}" class="btn btn-primary">Giỏ hàng</a>
-                        <a th:href="@{/checkout}" class="btn btn-outline-primary-2">
+                        <a th:href="@{/payment}" class="btn btn-outline-primary-2">
                             <span>Thanh Toán</span>
                             <i class="icon-long-arrow-right"></i>
                         </a>

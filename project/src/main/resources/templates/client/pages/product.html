@@ -25,7 +25,7 @@
 
                         <div class="product-body">
                             <h3 class="product-title"><a href="product.html" th:text="${product.productName}"></a></h3><!-- End .product-title -->
-                            <div class="product-price" th:text="${product.price}">
+                            <div class="product-price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} +  vnđ">
                             </div><!-- End .product-price -->
                         </div><!-- End .product-body -->
 

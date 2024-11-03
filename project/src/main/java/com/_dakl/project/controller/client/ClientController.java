@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -15,15 +15,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com._dakl.project.model.User;
 import com._dakl.project.model.Category;
+import com._dakl.project.model.Payment;
 import com._dakl.project.model.Product;
 import com._dakl.project.services.CartItemService;
 import com._dakl.project.services.CartService;
 import com._dakl.project.services.CategoryService;
+import com._dakl.project.services.PaymentService;
 import com._dakl.project.services.ProductService;
 import com._dakl.project.services.UserService;
 import jakarta.servlet.http.HttpSession;
+import java.util.HashSet;
 import java.util.Set;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,7 +49,8 @@ public class ClientController {
     private CartService cartService;
     @Autowired
     private CartItemService cartItemService;
-    
+    @Autowired
+    private PaymentService paymentService;
     @RequestMapping("")
     public String home(Model model , HttpSession session)
     {
@@ -170,11 +175,6 @@ public class ClientController {
             return "client/pages/login";
         }
     }
-    @RequestMapping("/cart")
-    public String cart(HttpSession session , Model model)
-    {
-        return  "client/pages/cart";
-    }
     @GetMapping("/cart")
     public String viewCart(HttpSession session, Model model) {
         // Lấy giỏ hàng từ session
@@ -285,4 +285,85 @@ public class ClientController {
             return "client/pages/register";
         }
     }
+    @PostMapping("/cart/edit-cart-item")
+    public String editCartItem(@RequestParam("id") Integer id , @RequestParam("quantity") Integer quantity , HttpSession session)
+    {
+        CartItem cartItem = cartItemService.findById(id);
+        cartItem.setQuantity(quantity);
+        if(cartItemService.update(cartItem))
+        {
+            
+            Cart cart = (Cart) session.getAttribute("CART");
+            Set<CartItem> cartItems = cart.getCartItems();
+            Set<CartItem> newCartItems = new HashSet<CartItem>();
+            for(CartItem x : cartItems)
+            {
+                if(x.getId() == id)
+                {
+                    CartItem ok = x;
+                    ok.setQuantity(quantity);
+                    newCartItems.add(ok);
+                }
+                else
+                {
+                    newCartItems.add(x);
+                }
+            }
+            cart.setCartItems(newCartItems);
+            session.setAttribute("CART", cart);
+            return "redirect:/cart";
+        }
+        else
+        {
+            return "redirect:/cart";
+        }
+    }
+    @GetMapping("/payment")
+    public String getPayment(HttpSession session , Model model) {
+        Cart cart = (Cart) session.getAttribute("CART");
+
+        if (cart == null) {
+            // Nếu giỏ hàng không tồn tại, khởi tạo một giỏ hàng mới
+            cart = new Cart();
+            session.setAttribute("CART", cart);
+        }
+
+        Set<CartItem> listItem = cart.getCartItems();
+        if (listItem == null || listItem.isEmpty()) {
+            // Nếu giỏ hàng trống, truyền thông báo
+            model.addAttribute("listItem", new ArrayList<>());
+            model.addAttribute("message", "Giỏ hàng của bạn trống");
+        } else {
+            model.addAttribute("listItem", listItem);
+            long total = 0;
+            for (CartItem x : listItem) {
+                total += (x.getQuantity() * x.getProduct().getPrice());
+            }
+            model.addAttribute("total", total);
+            model.addAttribute("size", listItem.size());
+        }
+
+        Payment payment = new Payment();
+        payment.setCartId(cart.getId());
+
+        model.addAttribute("payment", payment);
+        return "client/pages/payment";
+    }
+
+    @PostMapping("/payment")
+    public String savePayment(@ModelAttribute("payment") Payment payment, HttpSession session) {
+        Cart cart = (Cart)session.getAttribute("CART");
+        payment.setCartId(cart.getId());
+        if(paymentService.create(payment))
+        {
+            if(cartService.detete(cart.getId()))
+            {
+                session.removeAttribute("CART");
+                return "redirect:/products";
+            }
+        }
+        return "redirect:/payment";
+    }
+
+
 }

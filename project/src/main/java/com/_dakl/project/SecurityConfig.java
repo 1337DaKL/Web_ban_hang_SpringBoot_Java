@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/delete-cart-item/**").permitAll()
                         .requestMatchers("/add-to-cart/**").permitAll()
+                        .requestMatchers("/cart/edit-cart-item/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/logon")

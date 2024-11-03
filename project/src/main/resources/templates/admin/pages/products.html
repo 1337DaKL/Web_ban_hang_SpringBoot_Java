@@ -54,7 +54,7 @@
 
 
         </td>
-        <td th:text="${product.price}"></td>
+        <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} +  vnđ"></td>
         <td th:if="${product.status}"><span class="label label-success">Đang hoạt động</span></td>
         <td th:if="${!product.status}"><span class="label label-danger">Dừng hoạt động</span></td>
         <td><a class="btn btn-success" th:href="@{/admin/edit-product/{productId}(productId=${product.productId})}">Chỉnh sửa</a>

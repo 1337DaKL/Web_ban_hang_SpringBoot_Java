@@ -30,14 +30,32 @@
                             <img th:src="@{/uploads/{imageName}(imageName=${item.product.image})}" alt="Sản phẩm" height="100" width="100">
                         </td>
                         <td>
-                            <input type="number" th:value="${item.quantity}" min="1" class="quantity-input" 
-                               >
+                            <form th:action="@{/cart/edit-cart-item}" method="post">
+                                <input type="hidden" name="id" th:value="${item.id}" />
+                                
+                                <input type="number" name="quantity" th:value="${item.quantity}" min="1" class="quantity-input" />
+
+                                <button type="submit">Sửa</button>
+                            </form>
                         </td>
-                        <td th:text="${item.product.price}"></td>
-                        <td th:text="${item.quantity * item.product.price}"></td>
+
+                        <td th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} +  vnđ"></td>
+                        <td  th:text="${#numbers.formatDecimal(item.quantity * item.product.price, 0, 'COMMA', 0, 'POINT')} +  vnđ"></td>
+                    </tr>
+                    <tr>
+                        <div style="display: flex; justify-content: flex-end; align-items: center; padding: 10px; margin-top: 20px; border-top: 2px solid #ddd;">
+                            <span style="font-size: 1.2em; font-weight: bold; margin-right: 10px;">Tổng thanh toán:</span>
+                            <span style="font-size: 1.4em; font-weight: bold; color: #28a745;" th:text="${#numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT')} +  vnđ">0</span>
+
+
+
+                        </div>
                     </tr>
                 </tbody>
             </table>
+
+
+
             <div>
                 <div th:if="${size} == 0" class="empty-cart">
                     <p>Giỏ hàng của bạn đang trống. Hãy thêm sản phẩm để tiếp tục mua sắm!</p>
@@ -46,7 +64,7 @@
 
                 <div class="cart-actions" th:if="${size} != 0">
                     <a th:href="@{/products}" class="btn btn-secondary">Trở về</a>
-                    <button onclick="checkout()" class="btn btn-primary">Thanh toán</button>
+                    <a th:href="@{/payment}" class="btn btn-primary">Thanh toán</a>
                 </div>
             </div>
 
