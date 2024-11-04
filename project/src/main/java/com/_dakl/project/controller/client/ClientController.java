@@ -81,6 +81,15 @@ public class ClientController {
                 categorys.add(x);
             }
         }
+        List<Product> products = productService.getAll();
+        int cnt = 0;
+        Set<Product> demo = new HashSet<>();
+        for(Product x : products)
+        {
+            cnt++;
+            if(cnt <= 5) demo.add(x);
+        }
+        model.addAttribute("demo" , demo);
         model.addAttribute("category" , categorys);
         return "client/pages/home";
     }
@@ -88,7 +97,6 @@ public class ClientController {
     public String product(Model model , HttpSession session)
     {
         Cart cart = (Cart) session.getAttribute("CART");
-        System.out.println(cart);
         if (cart != null) {
             Set<CartItem> listItem = cart.getCartItems();
             System.out.println(listItem);
@@ -347,23 +355,90 @@ public class ClientController {
         payment.setCartId(cart.getId());
 
         model.addAttribute("payment", payment);
+        List<Category> listCategorys = this.categoryService.getAll();
+        List<Category> categorys = new ArrayList<>();
+        for(Category x : listCategorys)
+        {
+            if(x.getCategoryStatus() == true)
+            {
+                categorys.add(x);
+            }
+        }
+        model.addAttribute("category" , categorys);
         return "client/pages/payment";
     }
 
     @PostMapping("/payment")
     public String savePayment(@ModelAttribute("payment") Payment payment, HttpSession session) {
-        Cart cart = (Cart)session.getAttribute("CART");
+        Cart cart = (Cart) session.getAttribute("CART");
         payment.setCartId(cart.getId());
-        if(paymentService.create(payment))
-        {
-            if(cartService.detete(cart.getId()))
-            {
-                session.removeAttribute("CART");
-                return "redirect:/products";
+
+        if (paymentService.create(payment)) {
+            User user = userService.findByUserName((String) session.getAttribute("USERNAME"));
+
+            Cart existingCart = user.getCart();
+            if (existingCart != null) {
+                existingCart.setUser(null);
+                cartService.update(existingCart);
             }
+
+            Cart newCart = new Cart();
+            newCart.setUser(user);
+            cartService.create(newCart); 
+
+            user.setCart(newCart);
+            userService.update(user);
+
+            session.setAttribute("CART", newCart);
+
+            return "redirect:/products";
         }
         return "redirect:/payment";
     }
+    @RequestMapping("/products/filter/{category}")
+    public String productFilter(Model model , HttpSession session , @PathVariable("category") String category)
+    {
+        Cart cart = (Cart) session.getAttribute("CART");
+        if (cart != null) {
+            Set<CartItem> listItem = cart.getCartItems();
+            System.out.println(listItem);
+            model.addAttribute("listItem", listItem);
+            long total = 0;
+            for(CartItem x : listItem)
+            {
+                total += (x.getQuantity() * x.getProduct().getPrice());
+            }
+            model.addAttribute("total" , total);
+            model.addAttribute("size" , listItem.size());
+        } else {
+            // Nếu giỏ hàng trống, truyền thông báo
+            model.addAttribute("listItem", new ArrayList<>());
+            model.addAttribute("message", "Giỏ hàng của bạn trống");    
+        }
+        List<Product> list = this.productService.getAll();
+        List<Product> listProducts = new ArrayList<>();
+        for(Product x : list)
+        {
+            if(x.getStatus() == true && x.getCategory().getCategoryName().equals(category))
+            {
+                listProducts.add(x);
+            }
+        }
+        model.addAttribute("product" , listProducts);
+        List<Category> listCategorys = this.categoryService.getAll();
+        List<Category> categorys = new ArrayList<>();
+        for(Category x : listCategorys)
+        {
+            if(x.getCategoryStatus() == true)
+            {
+                categorys.add(x);
+            }
+        }
+        model.addAttribute("category" , categorys);
+        return "client/pages/products-filter";
+    }
+
+
 
 
 }

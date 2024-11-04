@@ -2,23 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Đăng ký</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            max-width: 400px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+        }
+    </style>
 </head>
 <body>
-    <h2>Đăng ký tài khoản</h2>
-    <form action="/register" method="post">
-        <label for="username">Tên người dùng:</label>
-        <input type="text" id="username" name="username" required><br>
+    <div class="container">
+        <h2 class="text-center">Đăng ký tài khoản</h2>
+        <form action="/register" method="post">
+            <div class="form-group">
+                <label for="username">Tên người dùng:</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
 
-        <label for="password">Mật khẩu:</label>
-        <input type="password" id="password" name="password" required><br>
+            <div class="form-group">
+                <label for="password">Mật khẩu:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
 
-        <button type="submit">Đăng ký</button>
-    </form>
-    
-    <div th:if="${error}" th:text="${error}"></div>
+            <button type="submit" class="btn btn-primary btn-block">Đăng ký</button>
+        </form>
+        
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

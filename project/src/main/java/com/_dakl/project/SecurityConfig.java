@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/delete-cart-item/**").permitAll()
                         .requestMatchers("/add-to-cart/**").permitAll()
                         .requestMatchers("/cart/edit-cart-item/**").permitAll()
+                        .requestMatchers("/products/filter/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/logon")
@@ -50,7 +51,8 @@ public class SecurityConfig {
                         .passwordParameter("password")
                         .defaultSuccessUrl("/admin", true))
                 .logout(logout -> logout.logoutUrl("/admin-logout").logoutSuccessUrl("/logon"))
-                .exceptionHandling(exception -> exception.accessDeniedPage("/403"));;
+                .exceptionHandling(exception -> exception.accessDeniedPage("/403"));
+        ;
         return httpSecurity.build();
     }
 

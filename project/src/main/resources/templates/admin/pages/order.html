@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security6">
+<head th:replace="admin/layouts/head :: head"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+  <header th:replace="admin/layouts/header :: header"></header>
+
+  <!-- =============================================== -->
+
+  <!-- Left side column. contains the sidebar -->
+  <aside th:replace="admin/layouts/siderbar :: sider-bar"></aside>
+
+  <!-- =============================================== -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <div><h1 style="color: #27ae60; text-align: center;">Thông tin Đơn Hàng</h1></div>
+    <div th:each="payment : ${listPayment}">
+<div style="max-width: 800px; margin: auto; padding: 20px; background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+
+    <!-- Thông tin khách hàng -->
+    <div style="margin-bottom: 20px;">
+        <p><strong>Tên:</strong> <p th:text="${payment.name}"></p></p>
+        <p><strong>Email:</strong> <p th:text="${payment.email}"></p></p>
+        <p><strong>Số điện thoại:</strong> <p th:text="${payment.phone}"></p></p>
+        <p><strong>Địa chỉ:</strong> <p th:text="${payment.address}"></p></p>
+    </div>
+
+    <!-- Danh sách sản phẩm đã mua -->
+    <div style="margin-bottom: 20px;">
+        <h2 style="margin-bottom: 10px; color: #27ae60;">Những Thứ Đã Mua</h2>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left; background-color: #f2f2f2; color: #333;">Tên sản phẩm</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left; background-color: #f2f2f2; color: #333;">Số lượng</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left; background-color: #f2f2f2; color: #333;">Giá</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left; background-color: #f2f2f2; color: #333;">Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${cart.get(payment.cartId).cartItems}">
+                    <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff;" th:text="${item.product.productName}"></td>
+                    <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff;" th:text="${item.quantity}"></td>
+                    <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff;" th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')}"></td>
+                    <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff;" th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')}"></td>
+                </tr>
+                
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="padding: 12px; border: 1px solid #ddd; text-align: left; font-weight: bold; background-color: #f9f9f9;">Tổng cộng</td>
+                    <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold; background-color: #f9f9f9;" th:text="${#numbers.formatDecimal(total.get(payment.cartId), 0, 'COMMA', 0, 'POINT')}"></td>
+                </tr>
+            </tfoot>
+
+        </table>
+        <div class="text-center" style="margin-top: 20px;">
+                <a type="button" class="btn btn-success btn-lg" id="confirmOrderButton" th:href="@{/admin/delete-order/{orderId}(orderId=${payment.paymentId})}">
+                    Chốt Đơn
+                </a>
+            </div>
+    </div>
+</div>
+</div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer th:replace="admin/layouts/footer :: footer"> </footer>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+
+<div th:replace="admin/layouts/script :: script"></div>
+</body>
+</html>
