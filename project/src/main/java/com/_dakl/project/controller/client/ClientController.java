@@ -26,6 +26,7 @@ import com._dakl.project.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -94,7 +95,7 @@ public class ClientController {
         return "client/pages/home";
     }
     @RequestMapping("/products")
-    public String product(Model model , HttpSession session)
+    public String product(Model model , HttpSession session , @RequestParam(name ="pageNo" , defaultValue = "1") Integer pageNo)
     {
         Cart cart = (Cart) session.getAttribute("CART");
         if (cart != null) {
@@ -113,7 +114,7 @@ public class ClientController {
             model.addAttribute("listItem", new ArrayList<>());
             model.addAttribute("message", "Giỏ hàng của bạn trống");    
         }
-        List<Product> list = this.productService.getAll();
+        Page<Product> list = this.productService.getAllClient(pageNo);
         List<Product> listProducts = new ArrayList<>();
         for(Product x : list)
         {
@@ -132,6 +133,8 @@ public class ClientController {
                 categorys.add(x);
             }
         }
+        model.addAttribute("totalPage" , list.getTotalPages());
+        model.addAttribute("currentPage" , pageNo);
         model.addAttribute("category" , categorys);
         return "client/pages/product";
     }
@@ -237,7 +240,7 @@ public class ClientController {
             }
         }
 
-        return "redirect:/products";
+        return "client/pages/cart";
     }
 
 
@@ -438,7 +441,20 @@ public class ClientController {
         return "client/pages/products-filter";
     }
 
-
+    @GetMapping("/view/{id}")
+    public String viewProduct(Model model ,  @PathVariable("id") Integer id)
+    {
+        Product product = productService.findById(id);
+        String desString = product.getDescription();
+        String ok = "";
+        for(int i = 3 ; i < desString.length() - 4 ; i++)
+        {
+            ok = ok + desString.charAt(i);
+        }
+        model.addAttribute("des" , ok);
+        model.addAttribute("product", product);
+        return "client/pages/view";
+    }
 
 
 }

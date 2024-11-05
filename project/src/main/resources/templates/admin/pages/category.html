@@ -61,13 +61,10 @@
             </tbody></table>
             <div class="pagination-container">
               <ul class="pagination">
-                  <li><a href="#">&laquo;</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">4</a></li>
-                  <li><a href="#">5</a></li>
-                  <li><a href="#">&raquo;</a></li>
+                  <li th:if="${currentPage > 1}"><a th:href="@{'?pageNo=' + ${currentPage - 1}}">&laquo;</a></li>
+
+                  <li th:each="i:${#numbers.sequence(1 , totalPage)}" th:classappend="${currentPage==i ? 'active' : ''}"><a th:href="@{'?pageNo=' + ${i}}" th:text="${i}"></a></li>
+                  <li th:if="${currentPage < totalPage}"><a th:href="@{'?pageNo=' + ${currentPage + 1}}">&raquo;</a></li>
               </ul>
           </div>
           

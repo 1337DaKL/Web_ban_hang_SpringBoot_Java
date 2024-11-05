@@ -8,6 +8,9 @@ import com._dakl.project.model.Product;
 import com._dakl.project.repository.ProductRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -59,6 +62,18 @@ public class ProductServiceImpl implements ProductService{
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public Page<Product> getAll(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 4);
+        return this.productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> getAllClient(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 16);
+        return this.productRepository.findAll(pageable);
     }
     
 }

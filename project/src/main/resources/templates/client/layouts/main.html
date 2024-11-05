@@ -82,7 +82,7 @@
                                     <span>Thêm vào giỏ hàng</span>
                                 </button>
                             </form>
-                            <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view" 
+                            <a th:href="@{/view/{productView}(productView=${product.productId})}" class="btn-product btn-quickview" title="Quick view" 
                             style="display: inline-flex; align-items: center; justify-content: center; 
                                     width: 100px; height: 40px; padding: 10px 20px; 
                                     border: none; background: none; cursor: pointer; 

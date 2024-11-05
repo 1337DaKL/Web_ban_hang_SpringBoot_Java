@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/add-to-cart/**").permitAll()
                         .requestMatchers("/cart/edit-cart-item/**").permitAll()
                         .requestMatchers("/products/filter/**").permitAll()
+                        .requestMatchers("/view/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/logon")

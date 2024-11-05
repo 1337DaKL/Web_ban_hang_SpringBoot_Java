@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com._dakl.project.model.Category;
 import com._dakl.project.services.CategoryService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -29,10 +31,12 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
     @GetMapping("/category")
-    public String index(Model model)
+    public String index(Model model , @RequestParam(name ="pageNo" , defaultValue = "1") Integer pageNo )
     {
-        List<Category> list = this.categoryService.getAll();
+        Page<Category> list = this.categoryService.getAll(pageNo);
         model.addAttribute("list" , list);
+        model.addAttribute("totalPage" , list.getTotalPages());
+        model.addAttribute("currentPage" , pageNo);
         return "admin/pages/category";
     }
     @RequestMapping("/add-category")

@@ -6,6 +6,7 @@ package com._dakl.project.services;
 
 import com._dakl.project.model.Category;
 import java.util.List;
+import org.springframework.data.domain.Page;
 
 /**
  *
@@ -17,4 +18,6 @@ public interface CategoryService {
     Category findById(Integer id);
     Boolean update(Category category);
     Boolean detete(Integer id);
+    Page<Category> getAll(Integer pageNo);
+    
 }

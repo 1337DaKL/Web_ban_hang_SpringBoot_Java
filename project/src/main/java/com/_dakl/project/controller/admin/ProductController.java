@@ -8,6 +8,7 @@ import com._dakl.project.services.StorageService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +30,12 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @RequestMapping("/products")
-    public String index(Model model)
+    public String index(Model model , @RequestParam(name ="pageNo" , defaultValue = "1") Integer pageNo)
     {
-        List<Product> listProducts = this.productService.getAll();
-        model.addAttribute("listProducts" , listProducts);
+        Page<Product> list = this.productService.getAll(pageNo);
+        model.addAttribute("listProducts" , list);
+        model.addAttribute("totalPage" , list.getTotalPages());
+        model.addAttribute("currentPage" , pageNo);
         return "admin/pages/products";
     }
     

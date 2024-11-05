@@ -7,6 +7,7 @@ package com._dakl.project.services;
 
 import com._dakl.project.model.Product;
 import java.util.List;
+import org.springframework.data.domain.Page;
 
 /**
  *
@@ -18,5 +19,7 @@ public interface ProductService {
     Product findById(Integer productId);
     Boolean update(Product product);
     Boolean detete(Integer productId);
+    Page<Product> getAll(Integer pageNo);
+    Page<Product> getAllClient(Integer pageNo);
 }
 

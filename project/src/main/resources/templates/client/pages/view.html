@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<!-- Mirrored from portotheme.com/html/molla/index-10.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 19 Jan 2024 03:02:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+
+<head th:replace="client/layouts/head :: head"> </head>
+<body style="font-family: Arial, sans-serif; background-color: #fff; margin: 0; padding: 0;">
+    <div class="page-wrapper">
+        <header th:replace="client/layouts/header"></header>
+        
+       <div style="max-width: 1200px; margin: 20px auto; background: #fff; border: 1px solid #000; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); overflow: hidden;">
+        <header style="background: #000; color: #fff; padding: 15px; text-align: center;">Chi Tiết Sản Phẩm</header>
+        
+        <div style="display: flex; padding: 20px;">
+            <img th:src="@{/uploads/{imageName}(imageName=${product.image})}" alt="Ảnh Sản Phẩm" style="width: 300px; height: auto; border-radius: 10px; margin-right: 20px;">
+            <div style="flex: 1;">
+                <div style="font-size: 24px; font-weight: bold; margin-bottom: 10px; color: #000;"th:text="${product.productName}"></div>
+                <div style="font-size: 24px; font-weight: bold; margin-bottom: 10px; color: #000;"> Giá :</div>
+                <div style="font-size: 20px; color: #000; margin-bottom: 10px;" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} +  vnđ"></div>
+                <div style="font-size: 24px; font-weight: bold; margin-bottom: 10px; color: #000;"th:text="${des}"></div>
+                <div style="margin-top: 20px;">
+                    <a href="javascript:history.back()" style="padding: 10px 15px; background: #000; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s;">Quay về</a>
+                    <form th:action="@{/add-to-cart/{id}(id=${product.productId})}" method="post" style="display: inline;">
+                        <button type="submit" style="padding: 10px 15px; background: #000; color: white; border: none; border-radius: 5px; transition: background 0.3s; margin-left: 10px;">Mua ngay</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <footer th:replace="client/layouts/footer"></footer>
+    </div><!-- End .page-wrapper -->
+    <div th:replace="client/layouts/script :: script"></div>
+</body>
+
+
+<!-- Mirrored from portotheme.com/html/molla/index-10.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 19 Jan 2024 03:03:17 GMT -->
+</html>

@@ -8,6 +8,9 @@ import com._dakl.project.model.Category;
 import com._dakl.project.repository.CategoryRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -62,6 +65,12 @@ public class CategoryServiceImpl implements CategoryService{
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public Page<Category> getAll(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 4);
+        return this.categoryRepository.findAll(pageable);
     }
     
 }
