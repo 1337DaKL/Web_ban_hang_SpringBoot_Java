@@ -1,7 +1,7 @@
- /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+/*
+* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+* Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+*/
 package com._dakl.project.controller.client;
 
 import com._dakl.project.model.Cart;
@@ -46,15 +46,15 @@ public class ClientController {
     private CategoryService categoryService;
     @Autowired
     private UserService userService;
-    @Autowired 
+    @Autowired
     private CartService cartService;
     @Autowired
     private CartItemService cartItemService;
     @Autowired
     private PaymentService paymentService;
+
     @RequestMapping("")
-    public String home(Model model , HttpSession session)
-    {
+    public String home(Model model, HttpSession session) {
         Cart cart = (Cart) session.getAttribute("CART");
         System.out.println(cart);
         if (cart != null) {
@@ -62,93 +62,87 @@ public class ClientController {
             System.out.println(listItem);
             model.addAttribute("listItem", listItem);
             long total = 0;
-            for(CartItem x : listItem)
-            {
+            for (CartItem x : listItem) {
                 total += (x.getQuantity() * x.getProduct().getPrice());
             }
-            model.addAttribute("total" , total);
-            model.addAttribute("size" , listItem.size());
+            model.addAttribute("total", total);
+            model.addAttribute("size", listItem.size());
         } else {
             // Nếu giỏ hàng trống, truyền thông báo
             model.addAttribute("listItem", new ArrayList<>());
-            model.addAttribute("message", "Giỏ hàng của bạn trống");    
+            model.addAttribute("message", "Giỏ hàng của bạn trống");
         }
         List<Category> listCategorys = this.categoryService.getAll();
         List<Category> categorys = new ArrayList<>();
-        for(Category x : listCategorys)
-        {
-            if(x.getCategoryStatus() == true)
-            {
+        for (Category x : listCategorys) {
+            if (x.getCategoryStatus() == true) {
                 categorys.add(x);
             }
         }
         List<Product> products = productService.getAll();
         int cnt = 0;
         Set<Product> demo = new HashSet<>();
-        for(Product x : products)
-        {
+        for (Product x : products) {
             cnt++;
-            if(cnt <= 5) demo.add(x);
+            if (cnt <= 5)
+                demo.add(x);
         }
-        model.addAttribute("demo" , demo);
-        model.addAttribute("category" , categorys);
+        model.addAttribute("demo", demo);
+        model.addAttribute("category", categorys);
         return "client/pages/home";
     }
+
     @RequestMapping("/products")
-    public String product(Model model , HttpSession session , @RequestParam(name ="pageNo" , defaultValue = "1") Integer pageNo)
-    {
+    public String product(Model model, HttpSession session,
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
         Cart cart = (Cart) session.getAttribute("CART");
         if (cart != null) {
             Set<CartItem> listItem = cart.getCartItems();
             System.out.println(listItem);
             model.addAttribute("listItem", listItem);
             long total = 0;
-            for(CartItem x : listItem)
-            {
+            for (CartItem x : listItem) {
                 total += (x.getQuantity() * x.getProduct().getPrice());
             }
-            model.addAttribute("total" , total);
-            model.addAttribute("size" , listItem.size());
+            model.addAttribute("total", total);
+            model.addAttribute("size", listItem.size());
         } else {
             // Nếu giỏ hàng trống, truyền thông báo
             model.addAttribute("listItem", new ArrayList<>());
-            model.addAttribute("message", "Giỏ hàng của bạn trống");    
+            model.addAttribute("message", "Giỏ hàng của bạn trống");
         }
         Page<Product> list = this.productService.getAllClient(pageNo);
         List<Product> listProducts = new ArrayList<>();
-        for(Product x : list)
-        {
-            if(x.getStatus() == true)
-            {
+        for (Product x : list) {
+            if (x.getStatus() == true) {
                 listProducts.add(x);
             }
         }
-        model.addAttribute("product" , listProducts);
+        model.addAttribute("product", listProducts);
         List<Category> listCategorys = this.categoryService.getAll();
         List<Category> categorys = new ArrayList<>();
-        for(Category x : listCategorys)
-        {
-            if(x.getCategoryStatus() == true)
-            {
+        for (Category x : listCategorys) {
+            if (x.getCategoryStatus() == true) {
                 categorys.add(x);
             }
         }
-        model.addAttribute("totalPage" , list.getTotalPages());
-        model.addAttribute("currentPage" , pageNo);
-        model.addAttribute("category" , categorys);
+        model.addAttribute("totalPage", list.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("category", categorys);
         return "client/pages/product";
     }
+
     @RequestMapping("login-client")
-    public String login()
-    {
+    public String login() {
         return "client/pages/login";
     }
+
     @PostMapping("/checklogin")
     public String checkLogin(
-        @RequestParam("username") String userName,
-        @RequestParam("password") String passWord,
-        Model model,
-        HttpSession session) {
+            @RequestParam("username") String userName,
+            @RequestParam("password") String passWord,
+            Model model,
+            HttpSession session) {
 
         if (userService.checkLogin(userName, passWord)) {
             System.err.println("Đăng nhập thành công");
@@ -163,7 +157,7 @@ public class ClientController {
             if (user.getCart() == null) {
                 Cart cart = new Cart();
                 cart.setUser(user);
-                cartService.create(cart);  // Lưu giỏ hàng mới vào DB
+                cartService.create(cart); // Lưu giỏ hàng mới vào DB
                 user.setCart(cart);
             }
 
@@ -173,9 +167,8 @@ public class ClientController {
             System.out.println(cart.getCartItems());
             session.setAttribute("CART", cart); // Lưu giỏ hàng vào session
 
-
             // Chuyển hướng về trang chủ sau khi đăng nhập thành công
-            return "redirect:/";  // Dùng redirect để tránh gửi lại form
+            return "redirect:/"; // Dùng redirect để tránh gửi lại form
         } else {
             System.out.println("Sai tài khoản hoặc mật khẩu");
 
@@ -186,6 +179,7 @@ public class ClientController {
             return "client/pages/login";
         }
     }
+
     @GetMapping("/cart")
     public String viewCart(HttpSession session, Model model) {
         // Lấy giỏ hàng từ session
@@ -205,8 +199,7 @@ public class ClientController {
         } else {
             model.addAttribute("listItem", listItem);
             long total = 0;
-            for(CartItem x : listItem)
-            {
+            for (CartItem x : listItem) {
                 total += (x.getQuantity() * x.getProduct().getPrice());
             }
             model.addAttribute("total", total);
@@ -216,12 +209,12 @@ public class ClientController {
         return "client/pages/cart"; // Trả về view cart
     }
 
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate();  // Hủy session
-        return "redirect:/login-client";  // Chuyển hướng về trang đăng nhập
+        session.invalidate(); // Hủy session
+        return "redirect:/login-client"; // Chuyển hướng về trang đăng nhập
     }
+
     @GetMapping("/delete-cart-item/{cartItemId}")
     public String deleteCartItem(@PathVariable("cartItemId") Integer cartItemId, HttpSession session) {
         if (cartItemService.detete(cartItemId)) {
@@ -229,9 +222,9 @@ public class ClientController {
 
             if (cart != null) {
                 CartItem cartItem = cart.getCartItems().stream()
-                                         .filter(item -> item.getId().equals(cartItemId))
-                                         .findFirst()
-                                         .orElse(null);
+                        .filter(item -> item.getId().equals(cartItemId))
+                        .findFirst()
+                        .orElse(null);
 
                 if (cartItem != null) {
                     cart.getCartItems().remove(cartItem);
@@ -243,94 +236,87 @@ public class ClientController {
         return "client/pages/cart";
     }
 
+    @PostMapping("/add-to-cart/{productId}")
+    public String addToCart(@PathVariable("productId") Integer productId, HttpSession session) {
+        Product product = productService.findById(productId);
+        if (product == null) {
+            return "redirect:/products";
+        }
 
+        Cart cart = (Cart) session.getAttribute("CART");
+        if (cart == null) {
+            cart = new Cart();
+        }
 
-   @PostMapping("/add-to-cart/{productId}")
-        public String addToCart(@PathVariable("productId") Integer productId, HttpSession session) {
-            Product product = productService.findById(productId);
-            if (product == null) {
-                return "redirect:/products";
-            }
-
-            Cart cart = (Cart) session.getAttribute("CART");
-            if (cart == null) {
-                cart = new Cart();
-            }
-
-            CartItem existingItem = cart.getCartItems().stream()
+        CartItem existingItem = cart.getCartItems().stream()
                 .filter(item -> item.getProduct().getProductId().equals(productId))
                 .findFirst()
                 .orElse(null);
 
-            if (existingItem != null) {
-                existingItem.setQuantity(existingItem.getQuantity() + 1);
-                cartItemService.update(existingItem);
-            } else {
-                CartItem cartItem = new CartItem();
-                cartItem.setProduct(product);
-                cartItem.setQuantity(1);
-                cart.addItem(cartItem); 
-                cartItem.setCart(cart);
-                cartItemService.create(cartItem);
-            }
-
-            session.setAttribute("CART", cart);
-            return "redirect:/products";
+        if (existingItem != null) {
+            existingItem.setQuantity(existingItem.getQuantity() + 1);
+            cartItemService.update(existingItem);
+        } else {
+            CartItem cartItem = new CartItem();
+            cartItem.setProduct(product);
+            cartItem.setQuantity(1);
+            cart.addItem(cartItem);
+            cartItem.setCart(cart);
+            cartItemService.create(cartItem);
         }
+
+        session.setAttribute("CART", cart);
+        return "redirect:/products";
+    }
 
     @GetMapping("/register")
     public String showRegistrationForm() {
-        return "client/pages/register"; 
+        return "client/pages/register";
     }
+
     @PostMapping("/register")
     public String registerUser(@RequestParam String username,
-                                @RequestParam String password,
-                                @RequestParam String email,
-                                Model model) {
-        
+            @RequestParam String password,
+            @RequestParam String email,
+            Model model) {
 
-        if (userService.registerUser(username , password , email)) {
-            return "client/pages/login"; 
+        if (userService.registerUser(username, password, email)) {
+            return "client/pages/login";
         } else {
             model.addAttribute("error", "Tên người dùng đã tồn tại!");
             return "client/pages/register";
         }
     }
+
     @PostMapping("/cart/edit-cart-item")
-    public String editCartItem(@RequestParam("id") Integer id , @RequestParam("quantity") Integer quantity , HttpSession session)
-    {
+    public String editCartItem(@RequestParam("id") Integer id, @RequestParam("quantity") Integer quantity,
+            HttpSession session) {
         CartItem cartItem = cartItemService.findById(id);
         cartItem.setQuantity(quantity);
-        if(cartItemService.update(cartItem))
-        {
-            
+        if (cartItemService.update(cartItem)) {
+
             Cart cart = (Cart) session.getAttribute("CART");
             Set<CartItem> cartItems = cart.getCartItems();
             Set<CartItem> newCartItems = new HashSet<CartItem>();
-            for(CartItem x : cartItems)
-            {
-                if(x.getId() == id)
-                {
+            for (CartItem x : cartItems) {
+                if (x.getId() == id) {
                     CartItem ok = x;
                     ok.setQuantity(quantity);
                     newCartItems.add(ok);
-                }
-                else
-                {
+                } else {
                     newCartItems.add(x);
                 }
             }
             cart.setCartItems(newCartItems);
             session.setAttribute("CART", cart);
             return "redirect:/cart";
-        }
-        else
-        {
+        } else {
             return "redirect:/cart";
         }
     }
+
     @GetMapping("/payment")
-    public String getPayment(HttpSession session , Model model) {
+    public String getPayment(HttpSession session, Model model) {
         Cart cart = (Cart) session.getAttribute("CART");
 
         if (cart == null) {
@@ -360,14 +346,12 @@ public class ClientController {
         model.addAttribute("payment", payment);
         List<Category> listCategorys = this.categoryService.getAll();
         List<Category> categorys = new ArrayList<>();
-        for(Category x : listCategorys)
-        {
-            if(x.getCategoryStatus() == true)
-            {
+        for (Category x : listCategorys) {
+            if (x.getCategoryStatus() == true) {
                 categorys.add(x);
             }
         }
-        model.addAttribute("category" , categorys);
+        model.addAttribute("category", categorys);
         return "client/pages/payment";
     }
 
@@ -387,7 +371,7 @@ public class ClientController {
 
             Cart newCart = new Cart();
             newCart.setUser(user);
-            cartService.create(newCart); 
+            cartService.create(newCart);
 
             user.setCart(newCart);
             userService.update(user);
@@ -398,63 +382,63 @@ public class ClientController {
         }
         return "redirect:/payment";
     }
+
     @RequestMapping("/products/filter/{category}")
-    public String productFilter(Model model , HttpSession session , @PathVariable("category") String category)
-    {
+    public String productFilter(Model model, HttpSession session, @PathVariable("category") String category) {
         Cart cart = (Cart) session.getAttribute("CART");
         if (cart != null) {
             Set<CartItem> listItem = cart.getCartItems();
             System.out.println(listItem);
             model.addAttribute("listItem", listItem);
             long total = 0;
-            for(CartItem x : listItem)
-            {
+            for (CartItem x : listItem) {
                 total += (x.getQuantity() * x.getProduct().getPrice());
             }
-            model.addAttribute("total" , total);
-            model.addAttribute("size" , listItem.size());
+            model.addAttribute("total", total);
+            model.addAttribute("size", listItem.size());
         } else {
             // Nếu giỏ hàng trống, truyền thông báo
             model.addAttribute("listItem", new ArrayList<>());
-            model.addAttribute("message", "Giỏ hàng của bạn trống");    
+            model.addAttribute("message", "Giỏ hàng của bạn trống");
         }
         List<Product> list = this.productService.getAll();
         List<Product> listProducts = new ArrayList<>();
-        for(Product x : list)
-        {
-            if(x.getStatus() == true && x.getCategory().getCategoryName().equals(category))
-            {
+        for (Product x : list) {
+            if (x.getStatus() == true && x.getCategory().getCategoryName().equals(category)) {
                 listProducts.add(x);
             }
         }
-        model.addAttribute("product" , listProducts);
+        model.addAttribute("product", listProducts);
         List<Category> listCategorys = this.categoryService.getAll();
         List<Category> categorys = new ArrayList<>();
-        for(Category x : listCategorys)
-        {
-            if(x.getCategoryStatus() == true)
-            {
+        for (Category x : listCategorys) {
+            if (x.getCategoryStatus() == true) {
                 categorys.add(x);
             }
         }
-        model.addAttribute("category" , categorys);
+        model.addAttribute("category", categorys);
         return "client/pages/products-filter";
     }
 
     @GetMapping("/view/{id}")
-    public String viewProduct(Model model ,  @PathVariable("id") Integer id)
-    {
+    public String viewProduct(Model model, @PathVariable("id") Integer id) {
         Product product = productService.findById(id);
         String desString = product.getDescription();
         String ok = "";
-        for(int i = 3 ; i < desString.length() - 4 ; i++)
-        {
+        for (int i = 3; i < desString.length() - 4; i++) {
             ok = ok + desString.charAt(i);
         }
-        model.addAttribute("des" , ok);
+        model.addAttribute("des", ok);
         model.addAttribute("product", product);
+        List<Category> listCategorys = this.categoryService.getAll();
+        List<Category> categorys = new ArrayList<>();
+        for (Category x : listCategorys) {
+            if (x.getCategoryStatus() == true) {
+                categorys.add(x);
+            }
+        }
+        model.addAttribute("category", categorys);
         return "client/pages/view";
     }
-
 
 }
